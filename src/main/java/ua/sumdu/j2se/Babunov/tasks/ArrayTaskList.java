@@ -26,7 +26,7 @@ public class ArrayTaskList {
 
     boolean remove(Task task) {
         int index = -1;
-        for (int i = 0; i < this.size - 1; i++) {
+        for (int i = 0; i < this.size; i++) {
             if (this.data[i] == task) {
                 index = i;
                 break;
