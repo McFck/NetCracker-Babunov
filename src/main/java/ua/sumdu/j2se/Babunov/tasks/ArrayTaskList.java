@@ -18,6 +18,9 @@ public class ArrayTaskList {
     }
 
     void add(Task task) {
+        if(task == null){
+            throw new ArrayStoreException();
+        }
         if (this.size == this.data.length) {
             ensureCapacity();
         }
@@ -55,9 +58,9 @@ public class ArrayTaskList {
 
     ArrayTaskList incoming(int from, int to) {
         ArrayTaskList subset = new ArrayTaskList();
+        int closestActivationTime;
         for (int i = 0; i < size; i++) {
-            int closestActivationTime = this.data[i].nextTimeAfter(from);
-
+            closestActivationTime = this.data[i].nextTimeAfter(from);
             if (closestActivationTime >= from && closestActivationTime <= to) {
                 subset.add(this.data[i]);
             }
