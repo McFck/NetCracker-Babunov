@@ -3,6 +3,7 @@ package ua.sumdu.j2se.Babunov.tasks;
 import java.util.Arrays;
 
 public class ArrayTaskList {
+
     private static final int INITIAL_CAPACITY = 10;
     private int size = 0;
     private Task[] data;
@@ -42,7 +43,7 @@ public class ArrayTaskList {
     }
 
     int size() {
-        return this.data.length;
+        return size;
     }
 
     Task getTask(int index) {
@@ -54,9 +55,11 @@ public class ArrayTaskList {
 
     ArrayTaskList incoming(int from, int to) {
         ArrayTaskList subset = new ArrayTaskList();
-        for (Task currentTask : this.data) {
-            if (currentTask.nextTimeAfter(from) <= to) {
-                subset.add(currentTask);
+        for (int i = 0; i < size; i++) {
+            int closestActivationTime = this.data[i].nextTimeAfter(from);
+
+            if (closestActivationTime >= from && closestActivationTime <= to) {
+                subset.add(this.data[i]);
             }
         }
         return subset;
