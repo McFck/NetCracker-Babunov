@@ -1,7 +1,5 @@
 package ua.sumdu.j2se.Babunov.tasks;
 
-import java.util.Arrays;
-
 public class LinkedTaskList {
     static class Node {
 
@@ -41,14 +39,14 @@ public class LinkedTaskList {
     public boolean remove(Task task) {
         if (this.head.data == task) {
             this.head = this.head.next;
-            size--;
+            this.size--;
             return true;
         }
         Node current = this.head;
         while (current.next != null) {
             if (current.next.data == task) {
                 current.next = current.next.next;
-                size--;
+                this.size--;
                 return true;
             }
             current = current.next;
@@ -57,7 +55,7 @@ public class LinkedTaskList {
     }
 
     public int size() {
-        return size;
+        return this.size;
     }
 
     public Task getTask(int index) {
