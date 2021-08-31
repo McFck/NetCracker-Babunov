@@ -17,9 +17,9 @@ public class ArrayTaskList {
         this.data = Arrays.copyOf(this.data, newIncreasedCapacity);
     }
 
-    void add(Task task) {
+    public void add(Task task) {
         if(task == null){
-            throw new ArrayStoreException();
+            throw new ArrayStoreException("No empty links allowed in TaskArrayList!");
         }
         if (this.size == this.data.length) {
             ensureCapacity();
@@ -27,7 +27,7 @@ public class ArrayTaskList {
         this.data[this.size++] = task;
     }
 
-    boolean remove(Task task) {
+    public boolean remove(Task task) {
         int index = -1;
         for (int i = 0; i < this.size; i++) {
             if (this.data[i] == task) {
@@ -45,18 +45,18 @@ public class ArrayTaskList {
         return true;
     }
 
-    int size() {
+    public int size() {
         return size;
     }
 
-    Task getTask(int index) {
+    public Task getTask(int index) {
         if (index < 0 || index >= this.size) {
             throw new IndexOutOfBoundsException(String.format("Index: %s, Size: %s", index, this.size));
         }
         return this.data[index];
     }
 
-    ArrayTaskList incoming(int from, int to) {
+    public ArrayTaskList incoming(int from, int to) {
         ArrayTaskList subset = new ArrayTaskList();
         int closestActivationTime;
         for (int i = 0; i < size; i++) {

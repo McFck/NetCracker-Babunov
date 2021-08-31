@@ -9,57 +9,69 @@ public class Task {
     private boolean isActive;
 
     public Task(String title, int time) {
+        if (time < 0) {
+            throw new IllegalArgumentException("Time can't be below 0!");
+        }
         this.title = title;
         this.time = time;
     }
 
     public Task(String title, int start, int end, int interval) {
+        if (end < 0 || start < 0 || interval <= 0) {
+            throw new IllegalArgumentException("Time stamp can't be below 0 and interval must be more than 0!");
+        }
         this.title = title;
         this.start = start;
         this.end = end;
         this.interval = interval;
     }
 
-    String getTitle() {
+    public String getTitle() {
         return this.title;
     }
 
-    void setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    boolean isActive() {
+    public boolean isActive() {
         return this.isActive;
     }
 
-    void setActive(boolean active) {
+    public void setActive(boolean active) {
         this.isActive = active;
     }
 
-    int getTime() {
+    public int getTime() {
         return this.isRepeated() ? this.start : this.time;
     }
 
-    void setTime(int time) {
+    public void setTime(int time) {
         if (this.isRepeated()) {
             this.interval = 0;
+        }
+        if (time < 0) {
+            throw new IllegalArgumentException("Time can't be below 0!");
         }
         this.time = time;
     }
 
-    int getStartTime() {
+    public int getStartTime() {
         return this.start;
     }
 
-    int getEndTime() {
+    public int getEndTime() {
         return this.end;
     }
 
-    int getRepeatInterval() {
+    public int getRepeatInterval() {
         return this.interval;
     }
 
-    void setTime(int start, int end, int interval) {
+    public void setTime(int start, int end, int interval) {
+        if (end < 0 || start < 0 || interval <= 0) {
+            throw new IllegalArgumentException("Time stamp can't be below 0 and interval must be more than 0!");
+        }
         this.interval = interval;
         this.start = start;
         this.end = end;
@@ -69,7 +81,7 @@ public class Task {
         return this.interval != 0;
     }
 
-    int nextTimeAfter(int current) {
+    public int nextTimeAfter(int current) {
         if (!this.isActive) {
             return -1;
         }
