@@ -1,8 +1,6 @@
 package com.netcracker.eductr.tasks.tests;
 
-import org.junit.jupiter.api.Test;
 import ua.sumdu.j2se.Babunov.tasks.AbstractTaskList;
-import ua.sumdu.j2se.Babunov.tasks.ArrayTaskList;
 import ua.sumdu.j2se.Babunov.tasks.Task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,7 +12,26 @@ public class BasicTaskListTests<E> {
         this.workList = workList;
     }
 
-    @Test
+    public void runAllTests() {
+        this.simpleRemoveFromList();
+        this.simpleAddToList();
+        this.complexAddToList();
+        this.incomingTest();
+    }
+
+    public void simpleRemoveFromList() {
+        this.workList.removeAll();
+        Task task = new Task("Test", 0);
+        Task task1 = new Task("Test1", 0);
+        this.workList.add(task);
+        this.workList.add(task1);
+        this.workList.add(task);
+        assertEquals(3, this.workList.size(), String.format("Wrong size! Expected: %s, Actual: %s", 1, this.workList.size()));
+        this.workList.remove(task);
+        assertEquals(2, this.workList.size(), String.format("Wrong size! Expected: %s, Actual: %s", 1, this.workList.size()));
+        assertEquals(task1, this.workList.getTask(0), String.format("Wrong task at index! Expected: %s, Actual: %s", task1.getTitle(), this.workList.getTask(0).getTitle()));
+    }
+
     public void simpleAddToList() {
         this.workList.removeAll();
         Task task = new Task("Test", 0);
@@ -23,7 +40,7 @@ public class BasicTaskListTests<E> {
         assertEquals(task, this.workList.getTask(0), String.format("Wrong task at index! Expected: %s, Actual: %s", task.getTitle(), this.workList.getTask(0).getTitle()));
     }
 
-    @Test
+
     public void complexAddToList() {
         this.workList.removeAll();
         Task task1 = new Task("Test", 0);
@@ -38,7 +55,7 @@ public class BasicTaskListTests<E> {
         assertEquals(task3, this.workList.getTask(1), String.format("Wrong task at index! Expected: %s, Actual: %s", task3.getTitle(), this.workList.getTask(1).getTitle()));
     }
 
-    @Test
+
     public void incomingTest() {
         this.workList.removeAll();
         Task task1 = new Task("Test0", 0);
