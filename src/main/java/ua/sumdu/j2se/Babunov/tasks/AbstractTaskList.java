@@ -13,6 +13,10 @@ public abstract class AbstractTaskList<E> {
 
     public abstract void add(Task task);
 
+    public abstract boolean remove(Task task);
+
+    public abstract void removeAll();
+
     public abstract Task getTask(int index);
 
     public abstract AbstractTaskList<E> getSublist();

@@ -75,20 +75,9 @@ public class LinkedTaskList extends AbstractTaskList<LinkedTaskList> {
         return new LinkedTaskList();
     }
 
-//    public LinkedTaskList incoming(int from, int to) {
-//        LinkedTaskList subset = new LinkedTaskList();
-//        int closestActivationTime;
-//        Node current = this.head;
-//
-//        while (current != null)
-//        {
-//            closestActivationTime = current.data.nextTimeAfter(from);
-//            if (closestActivationTime >= from && closestActivationTime <= to) {
-//                subset.add(current.data);
-//            }
-//            current = current.next;
-//        }
-//
-//        return subset;
-//    }
+    @Override
+    public void removeAll(){
+        this.head = null;
+        super.updateSize((-1)*super.size());
+    }
 }

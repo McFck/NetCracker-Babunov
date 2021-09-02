@@ -24,8 +24,9 @@ public class ArrayTaskList extends AbstractTaskList<ArrayTaskList> {
         if (super.size() == this.data.length) {
             ensureCapacity();
         }
-        super.updateSize(1);
+
         this.data[super.size()] = task;
+        super.updateSize(1);
     }
 
     public boolean remove(Task task) {
@@ -57,6 +58,12 @@ public class ArrayTaskList extends AbstractTaskList<ArrayTaskList> {
     @Override
     public AbstractTaskList<ArrayTaskList> getSublist() {
         return new ArrayTaskList();
+    }
+
+    @Override
+    public void removeAll(){
+        Arrays.fill(data, null);
+        super.updateSize((-1)*super.size());
     }
 
 }
