@@ -2,10 +2,9 @@ package ua.sumdu.j2se.Babunov.tasks;
 
 import java.util.Arrays;
 
-public class ArrayTaskList {
+public class ArrayTaskList extends AbstractTaskList<ArrayTaskList> {
 
     private static final int INITIAL_CAPACITY = 10;
-    private int size = 0;
     private Task[] data;
 
     public ArrayTaskList() {
@@ -17,19 +16,21 @@ public class ArrayTaskList {
         this.data = Arrays.copyOf(this.data, newIncreasedCapacity);
     }
 
+    @Override
     public void add(Task task) {
-        if(task == null){
+        if (task == null) {
             throw new ArrayStoreException("No empty links allowed in TaskArrayList!");
         }
-        if (this.size == this.data.length) {
+        if (super.size() == this.data.length) {
             ensureCapacity();
         }
-        this.data[this.size++] = task;
+        super.updateSize(1);
+        this.data[super.size()] = task;
     }
 
     public boolean remove(Task task) {
         int index = -1;
-        for (int i = 0; i < this.size; i++) {
+        for (int i = 0; i < super.size(); i++) {
             if (this.data[i] == task) {
                 index = i;
                 break;
@@ -39,33 +40,23 @@ public class ArrayTaskList {
             return false;
         }
 
-        System.arraycopy(this.data, index + 1, this.data, index, this.size - 1 - index);
-        this.size--;
+        System.arraycopy(this.data, index + 1, this.data, index, super.size() - 1 - index);
+        super.updateSize(-1);
 
         return true;
     }
 
-    public int size() {
-        return size;
-    }
-
+    @Override
     public Task getTask(int index) {
-        if (index < 0 || index >= this.size) {
-            throw new IndexOutOfBoundsException(String.format("Index: %s, Size: %s", index, this.size));
+        if (index < 0 || index >= super.size()) {
+            throw new IndexOutOfBoundsException(String.format("Index: %s, Size: %s", index, super.size()));
         }
         return this.data[index];
     }
 
-    public ArrayTaskList incoming(int from, int to) {
-        ArrayTaskList subset = new ArrayTaskList();
-        int closestActivationTime;
-        for (int i = 0; i < size; i++) {
-            closestActivationTime = this.data[i].nextTimeAfter(from);
-            if (closestActivationTime >= from && closestActivationTime <= to) {
-                subset.add(this.data[i]);
-            }
-        }
-        return subset;
+    @Override
+    public AbstractTaskList<ArrayTaskList> getSublist() {
+        return new ArrayTaskList();
     }
 
 }

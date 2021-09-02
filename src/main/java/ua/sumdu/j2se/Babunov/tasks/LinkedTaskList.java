@@ -1,6 +1,6 @@
 package ua.sumdu.j2se.Babunov.tasks;
 
-public class LinkedTaskList {
+public class LinkedTaskList extends AbstractTaskList<LinkedTaskList> {
     static class Node {
 
         Task data;
@@ -12,9 +12,9 @@ public class LinkedTaskList {
         }
     }
 
-    private int size = 0;
     private Node head;
 
+    @Override
     public void add(Task task) {
         if (task == null) {
             throw new ArrayStoreException("No empty links allowed in LinkedTaskList!");
@@ -24,8 +24,7 @@ public class LinkedTaskList {
         newNode.next = null;
         if (this.head == null) {
             this.head = newNode;
-        }
-        else {
+        } else {
             Node last = this.head;
             while (last.next != null) {
                 last = last.next;
@@ -33,20 +32,20 @@ public class LinkedTaskList {
             last.next = newNode;
         }
 
-        this.size++;
+        super.updateSize(1);
     }
 
     public boolean remove(Task task) {
         if (this.head.data == task) {
             this.head = this.head.next;
-            this.size--;
+            super.updateSize(-1);
             return true;
         }
         Node current = this.head;
         while (current.next != null) {
             if (current.next.data == task) {
                 current.next = current.next.next;
-                this.size--;
+                super.updateSize(-1);
                 return true;
             }
             current = current.next;
@@ -54,18 +53,14 @@ public class LinkedTaskList {
         return false;
     }
 
-    public int size() {
-        return this.size;
-    }
-
+    @Override
     public Task getTask(int index) {
-        if (index < 0 || index >= this.size) {
-            throw new IndexOutOfBoundsException(String.format("Index: %s, Size: %s", index, this.size));
+        if (index < 0 || index >= super.size()) {
+            throw new IndexOutOfBoundsException(String.format("Index: %s, Size: %s", index, super.size()));
         }
         Node current = this.head;
         int count = 0;
-        while (current != null)
-        {
+        while (current != null) {
             if (count == index)
                 return current.data;
             count++;
@@ -75,20 +70,25 @@ public class LinkedTaskList {
         return null;
     }
 
-    public LinkedTaskList incoming(int from, int to) {
-        LinkedTaskList subset = new LinkedTaskList();
-        int closestActivationTime;
-        Node current = this.head;
-
-        while (current != null)
-        {
-            closestActivationTime = current.data.nextTimeAfter(from);
-            if (closestActivationTime >= from && closestActivationTime <= to) {
-                subset.add(current.data);
-            }
-            current = current.next;
-        }
-
-        return subset;
+    @Override
+    public AbstractTaskList<LinkedTaskList> getSublist() {
+        return new LinkedTaskList();
     }
+
+//    public LinkedTaskList incoming(int from, int to) {
+//        LinkedTaskList subset = new LinkedTaskList();
+//        int closestActivationTime;
+//        Node current = this.head;
+//
+//        while (current != null)
+//        {
+//            closestActivationTime = current.data.nextTimeAfter(from);
+//            if (closestActivationTime >= from && closestActivationTime <= to) {
+//                subset.add(current.data);
+//            }
+//            current = current.next;
+//        }
+//
+//        return subset;
+//    }
 }
