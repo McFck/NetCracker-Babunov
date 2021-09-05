@@ -1,6 +1,6 @@
 package ua.sumdu.j2se.Babunov.tasks;
 
-public abstract class AbstractTaskList<E> {
+public abstract class AbstractTaskList<E> implements Iterable<Task> {
     private int size = 0;
 
     protected void updateSize(int value) {
@@ -16,6 +16,10 @@ public abstract class AbstractTaskList<E> {
     public abstract boolean remove(Task task);
 
     public abstract void removeAll();
+
+    //public native Object clone() throws CloneNotSupportedException;
+
+    //public abstract void removeAt(int index);
 
     public abstract Task getTask(int index);
 

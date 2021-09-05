@@ -1,17 +1,9 @@
 package ua.sumdu.j2se.Babunov.tasks;
 
-public class LinkedTaskList extends AbstractTaskList<LinkedTaskList> {
-    static class Node {
+import java.util.Iterator;
+import java.util.Objects;
 
-        Task data;
-        Node next;
-
-        Node(Task data) {
-            this.data = data;
-            next = null;
-        }
-    }
-
+public class LinkedTaskList extends AbstractTaskList<LinkedTaskList> implements Cloneable {
     private Node head;
 
     @Override
@@ -76,8 +68,107 @@ public class LinkedTaskList extends AbstractTaskList<LinkedTaskList> {
     }
 
     @Override
-    public void removeAll(){
+    public void removeAll() {
         this.head = null;
-        super.updateSize((-1)*super.size());
+        super.updateSize((-1) * super.size());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
+        LinkedTaskList otherList = (LinkedTaskList) o;
+        if (this.size() != otherList.size()) {
+            return false;
+        }
+
+        Node thisHead = this.head;
+        Node otherHead = otherList.head;
+
+        while (thisHead != null) {
+            if (!thisHead.data.equals(otherHead.data)) {
+                return false;
+            }
+            thisHead = thisHead.next;
+            otherHead = otherHead.next;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(head);
+    }
+
+    @Override
+    public String toString() {
+        Node current = this.head;
+        StringBuilder builder = new StringBuilder();
+        builder.append("LinkedTaskList{\n");
+        while (current != null) {
+            builder.append("\t");
+            builder.append(current.data);
+            if (current.next != null) {
+                builder.append(",");
+                builder.append("\n");
+            }
+            current = current.next;
+        }
+        builder.append("\n}");
+        return builder.toString();
+    }
+
+    @Override
+    public Iterator<Task> iterator() {
+        return new Itr(this.head);
+    }
+
+    @Override
+    public LinkedTaskList clone() {
+        try {
+            LinkedTaskList clone = (LinkedTaskList) super.clone();
+            if(this.size() == 0) return clone;
+            clone.updateSize((-1) * this.size());
+            clone.head = null;
+            Node current = this.head;
+            while (current != null) {
+                clone.add(current.data);
+                current = current.next;
+            }
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
+
+    static class Node {
+
+        Task data;
+        Node next;
+
+        Node(Task data) {
+            this.data = data;
+            next = null;
+        }
+    }
+
+    private class Itr implements Iterator<Task> {
+        Node current;
+
+        public Itr(Node firstInList) {
+            this.current = firstInList;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public Task next() {
+            Node savedCurrent = current;
+            current = current.next;
+            return savedCurrent.data;
+        }
     }
 }

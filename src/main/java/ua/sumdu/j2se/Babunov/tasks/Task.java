@@ -1,6 +1,8 @@
 package ua.sumdu.j2se.Babunov.tasks;
 
-public class Task {
+import java.util.Objects;
+
+public class Task implements Cloneable{
     private String title;
     private int time;
     private int start;
@@ -105,5 +107,48 @@ public class Task {
 
         }
         return current > this.time ? -1 : this.time;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return this.time == task.time && this.start == task.start &&
+                this.end == task.end && this.interval == task.interval &&
+                this.isActive == task.isActive && this.title.equals(task.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.title, this.time, this.start, this.end, this.interval, this.isActive);
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "title='" + title + '\'' +
+                ", time=" + time +
+                ", start=" + start +
+                ", end=" + end +
+                ", interval=" + interval +
+                ", isActive=" + isActive +
+                '}';
+    }
+
+    @Override
+    public Task clone() {
+        try {
+            Task clone = (Task) super.clone();
+            clone.title = this.title;
+            clone.time = this.time;
+            clone.start = this.start;
+            clone.end = this.end;
+            clone.interval = this.interval;
+            clone.isActive = this.isActive;
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
