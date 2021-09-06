@@ -1,6 +1,5 @@
 package ua.sumdu.j2se.Babunov.tasks;
 
-import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -34,15 +33,9 @@ public abstract class AbstractTaskList<E> implements Iterable<Task> {
     public final E incoming(int from, int to) {
         AbstractTaskList<E> subset = getSublist();
         Stream<Task> stream = this.getStream();
-        Task[] t = (Task[]) stream.filter(x -> x.nextTimeAfter(from) >= from && x.nextTimeAfter(from) <= to).toArray();
-//        int closestActivationTime;
-//
-//        for (int i = 0; i < this.size(); i++) {
-//            closestActivationTime = this.getTask(i).nextTimeAfter(from);
-//            if (closestActivationTime >= from && closestActivationTime <= to) {
-//                subset.add(this.getTask(i));
-//            }
-//        }
+        stream.filter(Objects::nonNull)
+                .filter(x -> x.nextTimeAfter(from) >= from && x.nextTimeAfter(from) <= to)
+                .forEach(subset::add);
         return (E) subset;
     }
 }

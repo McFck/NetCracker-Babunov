@@ -63,6 +63,9 @@ public class BasicTaskListTests<E> {
 
     public void incomingTest() {
         this.workList.removeAll();
+        AbstractTaskList<E> checkList =(AbstractTaskList<E>)this.workList.incoming(0, 0);
+        assertEquals(0, checkList.size(), String.format("Wrong size! Expected: %s, Actual: %s", 0, checkList.size()));
+
         Task task1 = new Task("Test0", 0);
         Task task2 = new Task("Test1", 1);
         Task task3 = new Task("Test2", 7);
