@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.stream.Stream;
 
 public class ArrayTaskList extends AbstractTaskList<ArrayTaskList> implements Cloneable {
 
@@ -67,6 +68,11 @@ public class ArrayTaskList extends AbstractTaskList<ArrayTaskList> implements Cl
     public void removeAll() {
         Arrays.fill(data, null);
         super.updateSize((-1) * super.size());
+    }
+
+    @Override
+    public Stream<Task> getStream() {
+        return Arrays.stream(this.data);
     }
 
     @Override

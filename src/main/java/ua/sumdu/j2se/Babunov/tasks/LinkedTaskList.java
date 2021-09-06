@@ -2,6 +2,7 @@ package ua.sumdu.j2se.Babunov.tasks;
 
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class LinkedTaskList extends AbstractTaskList<LinkedTaskList> implements Cloneable {
     private Node head;
@@ -74,6 +75,18 @@ public class LinkedTaskList extends AbstractTaskList<LinkedTaskList> implements 
     }
 
     @Override
+    public Stream<Task> getStream() {
+        Task[] data = new Task[this.size()];
+        int i = 0;
+        Node current = this.head;
+        while (current != null) {
+            data[i++] = current.data;
+            current = current.next;
+        }
+        return Stream.of(data);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
@@ -127,7 +140,7 @@ public class LinkedTaskList extends AbstractTaskList<LinkedTaskList> implements 
     public LinkedTaskList clone() {
         try {
             LinkedTaskList clone = (LinkedTaskList) super.clone();
-            if(this.size() == 0) return clone;
+            if (this.size() == 0) return clone;
             clone.updateSize((-1) * this.size());
             clone.head = null;
             Node current = this.head;
