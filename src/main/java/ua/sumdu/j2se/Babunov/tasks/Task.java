@@ -1,26 +1,27 @@
 package ua.sumdu.j2se.Babunov.tasks;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Task implements Cloneable{
+public class Task implements Cloneable {
     private String title;
-    private int time;
-    private int start;
-    private int end;
+    private LocalDateTime time;
+    private LocalDateTime start;
+    private LocalDateTime end;
     private int interval;
     private boolean isActive;
 
-    public Task(String title, int time) {
-        if (time < 0) {
-            throw new IllegalArgumentException("Time can't be below 0!");
+    public Task(String title, LocalDateTime time) {
+        if (time == null) {
+            throw new IllegalArgumentException("Time can't be null");
         }
         this.title = title;
         this.time = time;
     }
 
-    public Task(String title, int start, int end, int interval) {
-        if (end < 0 || start < 0 || interval <= 0) {
-            throw new IllegalArgumentException("Time stamp can't be below 0 and interval must be more than 0!");
+    public Task(String title, LocalDateTime start, LocalDateTime end, int interval) {
+        if (end == null || start == null || interval <= 0) {
+            throw new IllegalArgumentException("Time stamp can't be null and interval must be more than 0!");
         }
         this.title = title;
         this.start = start;
@@ -44,25 +45,25 @@ public class Task implements Cloneable{
         this.isActive = active;
     }
 
-    public int getTime() {
+    public LocalDateTime getTime() {
         return this.isRepeated() ? this.start : this.time;
     }
 
-    public void setTime(int time) {
+    public void setTime(LocalDateTime time) {
         if (this.isRepeated()) {
             this.interval = 0;
         }
-        if (time < 0) {
-            throw new IllegalArgumentException("Time can't be below 0!");
+        if (time == null) {
+            throw new IllegalArgumentException("Time can't be below null!");
         }
         this.time = time;
     }
 
-    public int getStartTime() {
+    public LocalDateTime getStartTime() {
         return this.start;
     }
 
-    public int getEndTime() {
+    public LocalDateTime getEndTime() {
         return this.end;
     }
 
@@ -70,9 +71,9 @@ public class Task implements Cloneable{
         return this.interval;
     }
 
-    public void setTime(int start, int end, int interval) {
-        if (end < 0 || start < 0 || interval <= 0) {
-            throw new IllegalArgumentException("Time stamp can't be below 0 and interval must be more than 0!");
+    public void setTime(LocalDateTime start, LocalDateTime end, int interval) {
+        if (end == null || start == null || interval <= 0) {
+            throw new IllegalArgumentException("Time stamp can't be null and interval must be more than 0!");
         }
         this.interval = interval;
         this.start = start;
@@ -83,30 +84,34 @@ public class Task implements Cloneable{
         return this.interval != 0;
     }
 
-    public int nextTimeAfter(int current) {
-        if (!this.isActive) {
-            return -1;
+    public LocalDateTime nextTimeAfter(LocalDateTime current) {
+        if (current == null) {
+            throw new IllegalArgumentException("Time stamp can't be null!");
         }
 
         if (this.isRepeated()) {
-            if (current <= this.start) {
+            if (this.end != null && current.isAfter(this.end)) {
+                return null;
+            }
+
+            if (this.start == null) {
+                return null;
+            }
+
+            if (current.compareTo(this.start) <= 0) {
                 return this.start;
             }
 
-            if (current > this.end) {
-                return -1;
-            }
-
-            int next;
+            LocalDateTime next;
 
             do {
-                next = this.start + this.interval;
-            } while (current > next);
+                next = this.start.plusHours(this.interval);
+            } while (current.isAfter(next));
 
             return next;
 
         }
-        return current > this.time ? -1 : this.time;
+        return current.isAfter(this.time) ? null : this.time; //!this.time.isAfter(current)
     }
 
     @Override
@@ -114,8 +119,9 @@ public class Task implements Cloneable{
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return this.time == task.time && this.start == task.start &&
-                this.end == task.end && this.interval == task.interval &&
+
+        return Objects.equals(this.time, task.time) && Objects.equals(this.start, task.start) &&
+                Objects.equals(this.end, task.end) && Objects.equals(this.interval, task.interval) &&
                 this.isActive == task.isActive && this.title.equals(task.title);
     }
 

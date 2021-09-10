@@ -3,13 +3,15 @@ package com.netcracker.eductr.tasks.tests;
 import ua.sumdu.j2se.Babunov.tasks.AbstractTaskList;
 import ua.sumdu.j2se.Babunov.tasks.Task;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-public class BasicTaskListTests<E> {
+public class BasicTaskListTest<E> {
     private AbstractTaskList<E> workList;
 
-    public BasicTaskListTests(AbstractTaskList<E> workList) {
+    public BasicTaskListTest(AbstractTaskList<E> workList) {
         this.workList = workList;
     }
 
@@ -26,8 +28,8 @@ public class BasicTaskListTests<E> {
 
     public void simpleRemoveFromList() {
         this.workList.removeAll();
-        Task task = new Task("Test", 0);
-        Task task1 = new Task("Test1", 0);
+        Task task = new Task("Test", LocalDateTime.now());
+        Task task1 = new Task("Test1", LocalDateTime.now());
         this.workList.add(task);
         this.workList.add(task1);
         this.workList.add(task);
@@ -39,7 +41,7 @@ public class BasicTaskListTests<E> {
 
     public void simpleAddToList() {
         this.workList.removeAll();
-        Task task = new Task("Test", 0);
+        Task task = new Task("Test", LocalDateTime.now());
         this.workList.add(task);
         assertEquals(1, this.workList.size(), String.format("Wrong size! Expected: %s, Actual: %s", 1, this.workList.size()));
         assertEquals(task, this.workList.getTask(0), String.format("Wrong task at index! Expected: %s, Actual: %s", task.getTitle(), this.workList.getTask(0).getTitle()));
@@ -48,9 +50,9 @@ public class BasicTaskListTests<E> {
 
     public void complexAddToList() {
         this.workList.removeAll();
-        Task task1 = new Task("Test", 0);
-        Task task2 = new Task("Test1", 1);
-        Task task3 = new Task("Test2", 2);
+        Task task1 = new Task("Test", LocalDateTime.now());
+        Task task2 = new Task("Test1", LocalDateTime.now());
+        Task task3 = new Task("Test2", LocalDateTime.now());
         this.workList.add(task1);
         this.workList.add(task2);
         assertEquals(2, this.workList.size(), String.format("Wrong size! Expected: %s, Actual: %s", 1, this.workList.size()));
@@ -63,13 +65,13 @@ public class BasicTaskListTests<E> {
 
     public void incomingTest() {
         this.workList.removeAll();
-        AbstractTaskList<E> checkList =(AbstractTaskList<E>)this.workList.incoming(0, 0);
+        AbstractTaskList<E> checkList = (AbstractTaskList<E>) this.workList.incoming(LocalDateTime.now(), LocalDateTime.now());
         assertEquals(0, checkList.size(), String.format("Wrong size! Expected: %s, Actual: %s", 0, checkList.size()));
 
-        Task task1 = new Task("Test0", 0);
-        Task task2 = new Task("Test1", 1);
-        Task task3 = new Task("Test2", 7);
-        Task task4 = new Task("Test3", 2);
+        Task task1 = new Task("Test0", LocalDateTime.of(2021, 9, 9, 0, 0));
+        Task task2 = new Task("Test1", LocalDateTime.of(2021, 9, 10, 0, 0));
+        Task task3 = new Task("Test2", LocalDateTime.of(2021, 9, 8, 0, 0));
+        Task task4 = new Task("Test3", LocalDateTime.of(2021, 9, 7, 0, 0));
 
         task1.setActive(true);
         task2.setActive(true);
@@ -83,18 +85,18 @@ public class BasicTaskListTests<E> {
 
         assertEquals(4, this.workList.size(), String.format("Wrong size! Expected: %s, Actual: %s", 1, this.workList.size()));
 
-        AbstractTaskList<E> subList = (AbstractTaskList<E>) this.workList.incoming(1, 2);
+        AbstractTaskList<E> subList = (AbstractTaskList<E>) this.workList.incoming(LocalDateTime.of(2021, 9, 7, 0, 0), LocalDateTime.of(2021, 9, 8, 0, 0));
         assertEquals(2, subList.size(), String.format("Wrong sublist size! Expected: %s, Actual: %s", 1, this.workList.size()));
 
-        assertEquals(task2, subList.getTask(0), String.format("Wrong task at index! Expected: %s, Actual: %s", task2.getTitle(), this.workList.getTask(0).getTitle()));
-        assertEquals(task4, subList.getTask(1), String.format("Wrong task at index! Expected: %s, Actual: %s", task4.getTitle(), this.workList.getTask(1).getTitle()));
+        assertEquals(task3, subList.getTask(0), String.format("Wrong task at index! Expected: %s, Actual: %s", task3.getTitle(), subList.getTask(0).getTitle()));
+        assertEquals(task4, subList.getTask(1), String.format("Wrong task at index! Expected: %s, Actual: %s", task4.getTitle(), subList.getTask(1).getTitle()));
     }
 
     public void iteratorTest() {
         this.workList.removeAll();
-        Task test = new Task("test", 0);
-        Task test1 = new Task("test1", 0);
-        Task test2 = new Task("test2", 0);
+        Task test = new Task("test", LocalDateTime.now());
+        Task test1 = new Task("test1", LocalDateTime.now());
+        Task test2 = new Task("test2", LocalDateTime.now());
         this.workList.add(test);
         this.workList.add(test1);
         this.workList.add(test2);
@@ -112,9 +114,9 @@ public class BasicTaskListTests<E> {
 
     public void multipleIteratorTest() {
         this.workList.removeAll();
-        Task test = new Task("test", 0);
-        Task test1 = new Task("test1", 0);
-        Task test2 = new Task("test2", 0);
+        Task test = new Task("test", LocalDateTime.now());
+        Task test1 = new Task("test1", LocalDateTime.now());
+        Task test2 = new Task("test2", LocalDateTime.now());
         this.workList.add(test);
         this.workList.add(test1);
         this.workList.add(test2);
@@ -137,9 +139,9 @@ public class BasicTaskListTests<E> {
 
     public void equalsTest() {
         this.workList.removeAll();
-        Task test = new Task("test", 0);
-        Task test1 = new Task("test1", 0);
-        Task test2 = new Task("test2", 0);
+        Task test = new Task("test", LocalDateTime.now());
+        Task test1 = new Task("test1", LocalDateTime.now());
+        Task test2 = new Task("test2", LocalDateTime.now());
         this.workList.add(test);
         this.workList.add(test1);
         this.workList.add(test2);
@@ -151,7 +153,7 @@ public class BasicTaskListTests<E> {
         newList.add(test2);
         assertEquals(this.workList, newList, "Lists weren't equals when they were supposed to!");
 
-        Task uniqueTest = new Task("test", 0);
+        Task uniqueTest = new Task("test", LocalDateTime.now());
         uniqueTest.setActive(true);
         this.workList.add(test);
         assertNotEquals(this.workList, newList, "Lists were equals when they weren't supposed to!");
@@ -159,8 +161,8 @@ public class BasicTaskListTests<E> {
 
     public void toStringTest() {
         this.workList.removeAll();
-        Task test = new Task("test", 0);
-        Task test1 = new Task("test1", 0);
+        Task test = new Task("test", LocalDateTime.now());
+        Task test1 = new Task("test1", LocalDateTime.now());
         this.workList.add(test);
         this.workList.add(test1);
         String[] parts = this.workList.toString().split("\n");

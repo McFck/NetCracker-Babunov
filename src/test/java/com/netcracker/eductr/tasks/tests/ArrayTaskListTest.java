@@ -4,20 +4,22 @@ import org.junit.jupiter.api.Test;
 import ua.sumdu.j2se.Babunov.tasks.ArrayTaskList;
 import ua.sumdu.j2se.Babunov.tasks.Task;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class ArrayTaskListTest {
     @Test
     public void runBasicTests() {
-        BasicTaskListTests<ArrayTaskList> testClass = new BasicTaskListTests<ArrayTaskList>(TaskListFactory.createTaskList(ListTypes.types.ARRAY));
+        BasicTaskListTest<ArrayTaskList> testClass = new BasicTaskListTest<ArrayTaskList>(TaskListFactory.createTaskList(ListTypes.types.ARRAY));
         testClass.runAllTests();
     }
 
     @Test
     public void cloneTest() {
         ArrayTaskList list = new ArrayTaskList();
-        Task test = new Task("test", 0);
+        Task test = new Task("test", LocalDateTime.now());
         Task test1 = test.clone();
         test1.setTitle("test1");
         assertNotEquals(test, test1, "Clone changes also translate to original!");

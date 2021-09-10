@@ -1,9 +1,10 @@
 package com.netcracker.eductr.tasks.tests;
 
 import org.junit.jupiter.api.Test;
-import ua.sumdu.j2se.Babunov.tasks.ArrayTaskList;
 import ua.sumdu.j2se.Babunov.tasks.LinkedTaskList;
 import ua.sumdu.j2se.Babunov.tasks.Task;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -11,14 +12,14 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class LinkedTaskListTest {
     @Test
     public void runBasicTests() {
-        BasicTaskListTests<LinkedTaskList> testClass = new BasicTaskListTests<LinkedTaskList>(TaskListFactory.createTaskList(ListTypes.types.LINKED));
+        BasicTaskListTest<LinkedTaskList> testClass = new BasicTaskListTest<LinkedTaskList>(TaskListFactory.createTaskList(ListTypes.types.LINKED));
         testClass.runAllTests();
     }
 
     @Test
     public void cloneTest() {
         LinkedTaskList list = new LinkedTaskList();
-        Task test = new Task("test", 0);
+        Task test = new Task("test", LocalDateTime.now());
         Task test1 = test.clone();
         test1.setTitle("test1");
         assertNotEquals(test, test1, "Clone changes also translate to original!");
