@@ -1,15 +1,22 @@
 package ua.sumdu.j2se.Babunov.tasks;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Task implements Cloneable {
+public class Task implements Cloneable, Serializable {
     private String title;
     private LocalDateTime time;
     private LocalDateTime start;
     private LocalDateTime end;
     private int interval;
     private boolean isActive;
+
+    private Task() {
+
+    }
 
     public Task(String title, LocalDateTime time) {
         if (time == null) {
@@ -67,6 +74,7 @@ public class Task implements Cloneable {
         return this.end;
     }
 
+    @JsonIgnore
     public int getRepeatInterval() {
         return this.interval;
     }

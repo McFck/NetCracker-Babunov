@@ -1,5 +1,7 @@
 package ua.sumdu.j2se.Babunov.tasks;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -158,6 +160,9 @@ public class LinkedTaskList extends AbstractTaskList<LinkedTaskList> implements 
 
         Task data;
         Node next;
+        private Node(){
+
+        }
 
         Node(Task data) {
             this.data = data;

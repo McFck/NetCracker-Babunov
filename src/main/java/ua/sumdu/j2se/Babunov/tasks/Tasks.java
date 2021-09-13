@@ -32,7 +32,8 @@ public class Tasks {
         for (LocalDateTime date = start; !date.isAfter(end); date = date.plusDays(1)) {
             currentSet = new HashSet<Task>();
 
-            var endT = date.toLocalDate().atTime(LocalTime.MAX);;
+            var endT = date.toLocalDate().atTime(LocalTime.MAX);
+            ;
             var incoming = Tasks.incoming(tasks, date, endT);
             for (var t : incoming) {
                 currentSet.add(t);

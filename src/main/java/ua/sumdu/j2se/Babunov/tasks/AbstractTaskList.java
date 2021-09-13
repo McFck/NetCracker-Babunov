@@ -1,10 +1,13 @@
 package ua.sumdu.j2se.Babunov.tasks;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public abstract class AbstractTaskList<E> implements Iterable<Task> {
+public abstract class AbstractTaskList<E> implements Iterable<Task>, Serializable {
     private int size = 0;
 
     protected void updateSize(int value) {
@@ -21,12 +24,16 @@ public abstract class AbstractTaskList<E> implements Iterable<Task> {
 
     public abstract void removeAll();
 
+    @JsonIgnore
     public abstract Stream<Task> getStream();
 
+    @JsonIgnore
     public abstract Task getTask(int index);
 
+    @JsonIgnore
     public abstract AbstractTaskList<E> getSublist();
 
+    @JsonIgnore
     public final E incoming(LocalDateTime from, LocalDateTime to) {
         AbstractTaskList<E> subset = getSublist();
         Stream<Task> stream = this.getStream();
