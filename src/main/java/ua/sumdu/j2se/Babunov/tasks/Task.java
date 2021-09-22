@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Task implements Cloneable, Serializable {
@@ -75,6 +78,20 @@ public class Task implements Cloneable, Serializable {
     }
 
     @JsonIgnore
+    public Map<Integer, String> getFieldsMap() {
+        var result = new HashMap<Integer, String>();
+
+        result.put(0, "Title");
+        result.put(1, "isActive");
+        result.put(2, "Time");
+        result.put(3, "Start time");
+        result.put(4, "End time");
+        result.put(5, "Interval");
+
+        return result;
+    }
+
+    @JsonIgnore
     public int getRepeatInterval() {
         return this.interval;
     }
@@ -140,14 +157,40 @@ public class Task implements Cloneable, Serializable {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "title='" + title + '\'' +
-                ", time=" + time +
-                ", start=" + start +
-                ", end=" + end +
-                ", interval=" + interval +
-                ", isActive=" + isActive +
-                '}';
+        var builder = new StringBuilder();
+        var formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        builder.append(this.title);
+        builder.append(" : ");
+        builder.append("(");
+        if (this.isRepeated()) {
+
+            builder.append(this.start.format(formatter))
+                    .append(" | ")
+                    .append(this.end.format(formatter))
+                    .append(" | Every ")
+                    .append(this.interval)
+                    .append(" hours");
+
+        } else {
+            builder.append(this.time.format(formatter));
+        }
+        builder.append(")");
+        if(this.isActive){
+            builder.append(" (+)");
+        } else {
+            builder.append(" (-)");
+        }
+        return builder.toString();
+
+//        return "Task{" +
+//                "title='" + title + '\'' +
+//                ", time=" + time +
+//                ", start=" + start +
+//                ", end=" + end +
+//                ", interval=" + interval +
+//                ", isActive=" + isActive +
+//                '}';
+        // Title : (Start | End | interval) / (Activation)
     }
 
     @Override
