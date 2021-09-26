@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class BasicTaskListTest<E> {
-    private AbstractTaskList<E> workList;
+    private final AbstractTaskList<E> workList;
 
     public BasicTaskListTest(AbstractTaskList<E> workList) {
         this.workList = workList;

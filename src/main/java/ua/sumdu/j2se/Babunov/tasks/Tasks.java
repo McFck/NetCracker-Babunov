@@ -33,7 +33,6 @@ public class Tasks {
             currentSet = new HashSet<Task>();
 
             var endT = date.toLocalDate().atTime(LocalTime.MAX);
-            ;
             var incoming = Tasks.incoming(tasks, date, endT);
             for (var t : incoming) {
                 currentSet.add(t);

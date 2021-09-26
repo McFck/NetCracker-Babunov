@@ -78,7 +78,7 @@ public class Task implements Cloneable, Serializable {
     }
 
     @JsonIgnore
-    public Map<Integer, String> getFieldsMap() {
+    public static Map<Integer, String> getFieldsMap() {
         var result = new HashMap<Integer, String>();
 
         result.put(0, "Title");
@@ -87,6 +87,20 @@ public class Task implements Cloneable, Serializable {
         result.put(3, "Start time");
         result.put(4, "End time");
         result.put(5, "Interval");
+
+        return result;
+    }
+
+    @JsonIgnore
+    public Map<Integer, Object> getParametersMap() {
+        var result = new HashMap<Integer, Object>();
+        var formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        result.put(0, this.title);
+        result.put(1, this.isActive ? "Yes" : "No");
+        result.put(2, this.time == null ? "Undefined" : this.time.format(formatter));
+        result.put(3, this.start == null ? "Undefined" : this.getStartTime().format(formatter));
+        result.put(4, this.end == null ? "Undefined" : this.getEndTime().format(formatter));
+        result.put(5, this.interval == 0 ? "Not repeating" : this.interval + " hours");
 
         return result;
     }
@@ -175,7 +189,7 @@ public class Task implements Cloneable, Serializable {
             builder.append(this.time.format(formatter));
         }
         builder.append(")");
-        if(this.isActive){
+        if (this.isActive) {
             builder.append(" (+)");
         } else {
             builder.append(" (-)");

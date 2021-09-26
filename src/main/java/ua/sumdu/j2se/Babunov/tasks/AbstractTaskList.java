@@ -38,7 +38,7 @@ public abstract class AbstractTaskList<E> implements Iterable<Task>, Serializabl
         AbstractTaskList<E> subset = getSublist();
         Stream<Task> stream = this.getStream();
         stream.filter(Objects::nonNull)
-                .filter(x -> !x.nextTimeAfter(from).isBefore(from) && !x.nextTimeAfter(from).isAfter(to))
+                .filter(x -> x.nextTimeAfter(from) != null && !x.nextTimeAfter(from).isBefore(from) && !x.nextTimeAfter(from).isAfter(to))
                 .forEach(subset::add);
         return (E) subset;
     }

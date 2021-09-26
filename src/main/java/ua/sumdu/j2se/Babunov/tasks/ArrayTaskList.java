@@ -1,7 +1,5 @@
 package ua.sumdu.j2se.Babunov.tasks;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;

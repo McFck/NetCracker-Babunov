@@ -1,21 +1,23 @@
 package ua.sumdu.j2se.Babunov.tasks.controller.commands;
 
 import ua.sumdu.j2se.Babunov.tasks.Task;
+import ua.sumdu.j2se.Babunov.tasks.controller.notifications.InputError;
 import ua.sumdu.j2se.Babunov.tasks.services.MainService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.format.DateTimeParseException;
 
 public class UpdateCommand implements Command {
-    private MainService service;
+    private final MainService service;
 
     public UpdateCommand(MainService service) {
         this.service = service;
     }
 
     private void changeActivity(Task task, int input, boolean newState) {
-        if (input == 0) {
+        if (input == 1) {
             task.setActive(newState);
             System.out.println("Status changed!");
         } else {
@@ -45,24 +47,28 @@ public class UpdateCommand implements Command {
         );
         int input;
         switch (choice) {
-            case 0:
+            case 0 -> {
                 System.out.println("Enter new title:");
                 task.setTitle(reader.readLine());
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if (task.isActive()) {
-                    System.out.println("Enter 0 to deactivate task:");
+                    System.out.println("Enter 1 to deactivate task:");
                     this.changeActivity(task, Integer.parseInt(reader.readLine()), false);
                 } else {
-                    System.out.println("Enter 0 to deactivate task:");
+                    System.out.println("Enter 1 to activate task:");
                     this.changeActivity(task, Integer.parseInt(reader.readLine()), true);
                 }
-                break;
-            case 2:
+                this.service.getNotificationManager().refreshNotifications(this.service.getNotificationsData());
+                //this.service.refreshNotifications();
+            }
+            case 2 -> {
                 System.out.println("Enter new activation time:");
                 task.setTime(UserInteraction.readDateTime(reader));
-                break;
-            case 3:
+                this.service.getNotificationManager().refreshNotifications(this.service.getNotificationsData());
+                //this.service.refreshNotifications();
+            }
+            case 3 -> {
                 if (task.getRepeatInterval() == 0) {
                     setRepeatable(reader, task);
                 } else {
@@ -74,8 +80,10 @@ public class UpdateCommand implements Command {
                     }
                     task.setTime(time, task.getEndTime(), task.getRepeatInterval());
                 }
-                break;
-            case 4:
+                this.service.getNotificationManager().refreshNotifications(this.service.getNotificationsData());
+                //this.service.refreshNotifications();
+            }
+            case 4 -> {
                 if (task.getRepeatInterval() == 0) {
                     setRepeatable(reader, task);
                 } else {
@@ -86,16 +94,21 @@ public class UpdateCommand implements Command {
                         return;
                     }
                     task.setTime(task.getStartTime(), time, task.getRepeatInterval());
+
                 }
-                break;
-            case 5:
+                this.service.getNotificationManager().refreshNotifications(this.service.getNotificationsData());
+                //this.service.refreshNotifications();
+            }
+            case 5 -> {
                 if (task.getRepeatInterval() == 0) {
                     setRepeatable(reader, task);
                 } else {
                     System.out.println("Enter new interval:");
                     task.setTime(task.getStartTime(), task.getEndTime(), Integer.parseInt(reader.readLine()));
                 }
-                break;
+                this.service.getNotificationManager().refreshNotifications(this.service.getNotificationsData());
+                //this.service.refreshNotifications();
+            }
         }
     }
 
@@ -103,11 +116,11 @@ public class UpdateCommand implements Command {
         var reader = new BufferedReader(
                 new InputStreamReader(System.in)
         );
-        var taskParameters = task.getFieldsMap();
+        var taskParameters = Task.getFieldsMap();
         for (var parameter : taskParameters.entrySet()) {
             System.out.println(parameter.getKey() + " | " + parameter.getValue());
         }
-        System.out.println("E | Exit");
+        System.out.println("E | Exit to main menu");
         int choice = 0;
         try {
             String input = reader.readLine();
@@ -119,13 +132,13 @@ public class UpdateCommand implements Command {
             e.printStackTrace();
         }
         if (choice < 0 || choice > taskParameters.size()) {
-            System.out.println("WRONG INPUT!");
+            new InputError().notifyEvent();
             return 0;
         }
         try {
             editChosenParameter(task, choice);
-        } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
+        } catch (IOException | NumberFormatException | DateTimeParseException e) {
+            new InputError().notifyEvent();
         }
         return 0;
     }
@@ -143,7 +156,7 @@ public class UpdateCommand implements Command {
         System.out.println("Choose task:");
         try {
             int id = Integer.parseInt(reader.readLine());
-            if (id > list.size() || id < 0) {
+            if (id >= list.size() || id < 0) {
                 System.out.println("Wrong task!");
                 return;
             }
@@ -155,8 +168,8 @@ public class UpdateCommand implements Command {
                 }
             }
 
-        } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
+        } catch (IOException | NumberFormatException | DateTimeParseException e) {
+            new InputError().notifyEvent();
         }
     }
 }

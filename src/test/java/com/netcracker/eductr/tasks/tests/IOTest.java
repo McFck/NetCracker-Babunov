@@ -7,7 +7,6 @@ import ua.sumdu.j2se.Babunov.tasks.Task;
 import ua.sumdu.j2se.Babunov.tasks.TaskIO;
 
 import java.io.File;
-import java.io.Writer;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

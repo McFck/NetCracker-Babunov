@@ -1,13 +1,15 @@
 package ua.sumdu.j2se.Babunov.tasks.controller.commands;
 
+import ua.sumdu.j2se.Babunov.tasks.controller.notifications.InputError;
 import ua.sumdu.j2se.Babunov.tasks.services.MainService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.format.DateTimeParseException;
 
 public class ViewScheduleCommand implements Command {
-    private MainService service;
+    private final MainService service;
 
     public ViewScheduleCommand(MainService service) {
         this.service = service;
@@ -26,16 +28,19 @@ public class ViewScheduleCommand implements Command {
             System.out.println("Enter schedule end:");
             var end = UserInteraction.readDateTime(reader);
 
+            if (!this.service.verifyDates(start, end)) {
+                System.out.println("Wrong dates order!!!");
+                return;
+            }
             var list = this.service.getIncomingList(start, end);
             if (list.size() == 0) {
                 System.out.println("No tasks scheduled for this period of time");
                 return;
             }
-            for (var t : list) {
-                System.out.println(t);
-            }
-        } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
+
+            this.service.getTable(list).printTable();
+        } catch (IOException | NumberFormatException | DateTimeParseException e) {
+            new InputError().notifyEvent();
         }
     }
 }

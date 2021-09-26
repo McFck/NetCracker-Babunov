@@ -1,14 +1,16 @@
 package ua.sumdu.j2se.Babunov.tasks.controller.commands;
 
 import ua.sumdu.j2se.Babunov.tasks.Task;
+import ua.sumdu.j2se.Babunov.tasks.controller.notifications.InputError;
 import ua.sumdu.j2se.Babunov.tasks.services.MainService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.format.DateTimeParseException;
 
 public class CreateCommand implements Command {
-    private MainService service;
+    private final MainService service;
 
     public CreateCommand(MainService service) {
         this.service = service;
@@ -35,6 +37,10 @@ public class CreateCommand implements Command {
                 var startDateTime = UserInteraction.readDateTime(reader);
                 System.out.println("Enter end execution date parameters...");
                 var endDateTime = UserInteraction.readDateTime(reader);
+                if (!this.service.verifyDates(startDateTime, endDateTime)) {
+                    System.out.println("Wrong dates order!!!");
+                    return;
+                }
                 task = new Task(title, startDateTime, endDateTime, interval);
 
             } else {
@@ -45,8 +51,9 @@ public class CreateCommand implements Command {
             System.out.println("Activate task? (Default: No,(Y))");
             isActive = reader.readLine().equals("Y");
 
-        } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
+        } catch (IOException | NumberFormatException | DateTimeParseException e) {
+            new InputError().notifyEvent();
+            return;
         }
         if (isActive) {
             task.setActive(true);

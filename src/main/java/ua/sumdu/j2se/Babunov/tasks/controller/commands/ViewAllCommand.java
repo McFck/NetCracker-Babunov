@@ -23,8 +23,6 @@ public class ViewAllCommand implements Command {
             System.out.println("No tasks available!");
             return;
         }
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println(list.getTask(i));
-        }
+        this.service.getTable(list).printTable();
     }
 }

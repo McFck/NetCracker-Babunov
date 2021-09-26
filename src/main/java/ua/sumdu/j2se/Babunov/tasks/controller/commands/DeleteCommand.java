@@ -1,6 +1,7 @@
 package ua.sumdu.j2se.Babunov.tasks.controller.commands;
 
 import ua.sumdu.j2se.Babunov.tasks.Task;
+import ua.sumdu.j2se.Babunov.tasks.controller.notifications.InputError;
 import ua.sumdu.j2se.Babunov.tasks.services.MainService;
 
 import java.io.BufferedReader;
@@ -8,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class DeleteCommand implements Command {
-    private MainService service;
+    private final MainService service;
 
     public DeleteCommand(MainService service) {
         this.service = service;
@@ -40,8 +41,8 @@ public class DeleteCommand implements Command {
                     this.service.removeTask(found.getTask(Integer.parseInt(token) - 1));
                 }
             }
-        } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
+        } catch (IOException | NumberFormatException | IndexOutOfBoundsException e) {
+            new InputError().notifyEvent();
         }
     }
 }

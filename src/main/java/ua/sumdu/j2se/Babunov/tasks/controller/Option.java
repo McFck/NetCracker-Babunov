@@ -6,6 +6,7 @@ public class Option {
     public String id;
     public String description;
     public Command command;
+
     public Option(String id, String description, Command command) {
         this.id = id;
         this.description = description;

@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 public abstract class Controller implements Command {
+
     public void ClearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -20,6 +21,8 @@ public abstract class Controller implements Command {
     }
 
     protected abstract List<Option> GetChoices();
+
+    protected abstract void ExitRoutine();
 
     public void Excecute() {
         var reader = new BufferedReader(
@@ -36,6 +39,7 @@ public abstract class Controller implements Command {
                 input = "";
             }
             if (input.equals("E")) {
+                this.ExitRoutine();
                 break;
             }
             isFound = false;

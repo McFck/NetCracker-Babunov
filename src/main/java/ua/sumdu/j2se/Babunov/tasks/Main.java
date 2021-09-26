@@ -5,6 +5,9 @@ import ua.sumdu.j2se.Babunov.tasks.services.MainService;
 
 public class Main {
     public static void main(String[] args) {
-        new CRUDMenu(new MainService()).Excecute();
+        var mService = new MainService();
+        mService.tryLoadSession();
+        new CRUDMenu(mService).Excecute();
+        System.exit(0);
     }
 }
