@@ -141,10 +141,10 @@ public class Task implements Cloneable, Serializable {
                 return this.start;
             }
 
-            LocalDateTime next;
+            LocalDateTime next = this.start;
 
             do {
-                next = this.start.plusHours(this.interval);
+                next = next.plusHours(this.interval);
             } while (current.isAfter(next));
 
             return next;
