@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         var mService = new MainService();
         mService.tryLoadSession();
-        new CRUDMenu(mService).Excecute();
+        new CRUDMenu(mService).Execute();
         System.exit(0);
     }
 }

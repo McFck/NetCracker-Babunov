@@ -78,9 +78,11 @@ public class Task implements Cloneable, Serializable {
     }
 
     @JsonIgnore
-    public static Map<Integer, String> getFieldsMap() {
+    public static Map<Integer, String> getFieldsMap(boolean isNumbered) {
         var result = new HashMap<Integer, String>();
-
+        if(isNumbered){
+            result.put(-1, "Number");
+        }
         result.put(0, "Title");
         result.put(1, "isActive");
         result.put(2, "Time");
@@ -114,6 +116,7 @@ public class Task implements Cloneable, Serializable {
         if (end == null || start == null || interval <= 0) {
             throw new IllegalArgumentException("Time stamp can't be null and interval must be more than 0!");
         }
+        this.time = null;
         this.interval = interval;
         this.start = start;
         this.end = end;

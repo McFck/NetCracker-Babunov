@@ -17,7 +17,7 @@ public class CreateCommand implements Command {
     }
 
     @Override
-    public void Excecute() {
+    public void Execute() {
         var reader = new BufferedReader(
                 new InputStreamReader(System.in)
         );

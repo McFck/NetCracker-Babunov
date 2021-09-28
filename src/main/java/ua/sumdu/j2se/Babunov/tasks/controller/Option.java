@@ -14,7 +14,7 @@ public class Option {
     }
 
     public void ExecuteOption() {
-        command.Excecute();
+        command.Execute();
     }
 
     @Override

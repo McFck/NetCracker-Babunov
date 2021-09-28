@@ -16,7 +16,7 @@ public class ViewScheduleCommand implements Command {
     }
 
     @Override
-    public void Excecute() {
+    public void Execute() {
         var reader = new BufferedReader(
                 new InputStreamReader(System.in)
         );
@@ -38,7 +38,7 @@ public class ViewScheduleCommand implements Command {
                 return;
             }
 
-            this.service.getTable(list).printTable();
+            this.service.getTable(list, false).printTable();
         } catch (IOException | NumberFormatException | DateTimeParseException e) {
             new InputError().notifyEvent();
         }

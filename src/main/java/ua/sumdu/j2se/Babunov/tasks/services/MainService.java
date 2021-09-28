@@ -22,14 +22,12 @@ public class MainService {
     public MainService() {
         this.taskList = new ArrayTaskList();
         this.timer = new Timer();
-        //this.timer.schedule (hourlyTask, 0L, 1000*60*60);
         this.notificationManager = new NotificationManager(this);
     }
 
     public void addTask(Task task) {
         this.taskList.add(task);
         this.notificationManager.refreshNotifications(this.getNotificationsData());
-        //this.refreshNotifications();
     }
 
     public AbstractTaskList getNotificationsData() {
@@ -41,35 +39,12 @@ public class MainService {
         return this.notificationManager;
     }
 
-//    public void refreshNotifications(){
-//        var today = LocalDateTime.now();
-//        Date out;
-//        this.timer.cancel();
-//        this.timer = new Timer();
-//        for(var task : this.taskList.incoming(today, today.plus(1, ChronoUnit.DAYS))){
-//            var nextTime = task.nextTimeAfter(today);
-//            if(nextTime != null){
-//                out = Date.from(nextTime.atZone(ZoneId.systemDefault()).toInstant());
-//                this.timer.schedule(new TaskNotification(task), out);
-//            }
-//        }
-//    }
-//
-//    TimerTask hourlyTask = new TimerTask() {
-//
-//        @Override
-//        public void run() {
-//            refreshNotifications();
-//        }
-//    };
-
     public boolean tryLoadSession() {
         var file = new File(fileName);
         if (file.exists() && !file.isDirectory()) {
             TaskIO.readBinary(this.taskList, file);
             new SuccessfulLoading().notifyEvent();
             this.notificationManager.refreshNotifications(this.getNotificationsData());
-            //this.refreshNotifications();
             return true;
         }
         return false;
@@ -91,16 +66,18 @@ public class MainService {
         return result;
     }
 
-    public TextTable getTable(ArrayTaskList list) {
-        Object[][] params = new Object[list.size()][6];
+    public TextTable getTable(ArrayTaskList list, boolean isNumbered) {
+        int additional = isNumbered ? 1 : 0;
+        Object[][] params = new Object[list.size()][6 + additional];
         Map<Integer, Object> map;
         for (int i = 0; i < list.size(); i++) {
             map = list.getTask(i).getParametersMap();
-            for (int j = 0; j < 6; j++) {
+            params[i][0] = i;
+            for (int j = additional; j < 6 + additional; j++) {
                 params[i][j] = map.get(j);
             }
         }
-        return new TextTable(Task.getFieldsMap().values().toArray(new String[0]), params);
+        return new TextTable(Task.getFieldsMap(false).values().toArray(new String[0]), params);
     }
 
     public ArrayTaskList getTaskList() {
@@ -118,6 +95,5 @@ public class MainService {
     public void removeTask(Task t) {
         this.taskList.remove(t);
         this.notificationManager.refreshNotifications(this.getNotificationsData());
-        //this.refreshNotifications();
     }
 }

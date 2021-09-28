@@ -24,7 +24,7 @@ public abstract class Controller implements Command {
 
     protected abstract void ExitRoutine();
 
-    public void Excecute() {
+    public void Execute() {
         var reader = new BufferedReader(
                 new InputStreamReader(System.in));
         String input = null;

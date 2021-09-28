@@ -13,7 +13,7 @@ public class ViewAllCommand implements Command {
     }
 
     @Override
-    public void Excecute() {
+    public void Execute() {
         var reader = new BufferedReader(
                 new InputStreamReader(System.in)
         );
@@ -23,6 +23,6 @@ public class ViewAllCommand implements Command {
             System.out.println("No tasks available!");
             return;
         }
-        this.service.getTable(list).printTable();
+        this.service.getTable(list, false).printTable();
     }
 }

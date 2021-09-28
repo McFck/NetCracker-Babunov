@@ -116,7 +116,7 @@ public class UpdateCommand implements Command {
         var reader = new BufferedReader(
                 new InputStreamReader(System.in)
         );
-        var taskParameters = Task.getFieldsMap();
+        var taskParameters = Task.getFieldsMap(false);
         for (var parameter : taskParameters.entrySet()) {
             System.out.println(parameter.getKey() + " | " + parameter.getValue());
         }
@@ -144,15 +144,14 @@ public class UpdateCommand implements Command {
     }
 
     @Override
-    public void Excecute() {
+    public void Execute() {
         var reader = new BufferedReader(
                 new InputStreamReader(System.in)
         );
         System.out.println("Enter task id:");
+        var t = this.service.getTable(this.service.getTaskList(), true);
+        t.printTable();
         var list = this.service.getTaskList();
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println(i + "| " + list.getTask(i));
-        }
         System.out.println("Choose task:");
         try {
             int id = Integer.parseInt(reader.readLine());

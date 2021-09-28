@@ -16,7 +16,7 @@ public class DeleteCommand implements Command {
     }
 
     @Override
-    public void Excecute() {
+    public void Execute() {
         var reader = new BufferedReader(
                 new InputStreamReader(System.in)
         );
@@ -40,6 +40,7 @@ public class DeleteCommand implements Command {
                 for (var token : tokens) {
                     this.service.removeTask(found.getTask(Integer.parseInt(token) - 1));
                 }
+                System.out.println("Deleted!");
             }
         } catch (IOException | NumberFormatException | IndexOutOfBoundsException e) {
             new InputError().notifyEvent();
